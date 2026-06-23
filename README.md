@@ -53,10 +53,10 @@ Just type any of the registered slash commands:
 
 | Command | What it does |
 |---|---|
-| `/security-assess` | Full scan: SAST + DAST simulation + Secret hunting + Compliance audit |
-| `/compliance-audit` | Deep Indian regulatory audit (DPDP, IT Act, PCI DSS, CERT-IN, RBI, SEBI, IRDAI) |
-| `/quick-scan` | Fast SAST + secret scan only (no DAST, no compliance) |
-| `/fix-issue` | Interactively fix a specific vulnerability with before/after diff |
+| `/tiger-security-assess` | Full scan: SAST + DAST simulation + Secret hunting + Compliance audit |
+| `/tiger-compliance-audit` | Deep Indian regulatory audit (DPDP, IT Act, PCI DSS, CERT-IN, RBI, SEBI, IRDAI) |
+| `/tiger-quick-scan` | Fast SAST + secret scan only (no DAST, no compliance) |
+| `/tiger-fix-issue` | Interactively fix a specific vulnerability with before/after diff |
 
 That's it. No `npm install`, no `pip install`, no API keys.
 
@@ -97,11 +97,11 @@ $s = irm https://raw.githubusercontent.com/TheWildEye/Petpooja-security/main/ins
 ```
 your-project/
 └── .claude/
-    ├── commands/               # Slash command entry points
-    │   ├── security-assess.md  ← /security-assess
-    │   ├── compliance-audit.md ← /compliance-audit
-    │   ├── quick-scan.md       ← /quick-scan
-    │   └── fix-issue.md        ← /fix-issue
+    ├── commands/                     # Slash command entry points
+    │   ├── tiger-security-assess.md  ← /tiger-security-assess
+    │   ├── tiger-compliance-audit.md ← /tiger-compliance-audit
+    │   ├── tiger-quick-scan.md       ← /tiger-quick-scan
+    │   └── tiger-fix-issue.md        ← /tiger-fix-issue
     ├── agents/                 # Specialized reasoning engines
     │   ├── sast-engine.md
     │   ├── secret-hunter.md

@@ -44,7 +44,7 @@ Invoke-RestMethod -Uri "$BaseUrl/settings.json" -OutFile "$TargetDir/settings.js
 
 # Download commands
 Write-Host "Fetching commands..."
-@("security-assess", "compliance-audit", "quick-scan", "fix-issue") | ForEach-Object {
+@("tiger-security-assess", "tiger-compliance-audit", "tiger-quick-scan", "tiger-fix-issue") | ForEach-Object {
     Invoke-RestMethod -Uri "$BaseUrl/commands/$_.md" -OutFile "$TargetDir/commands/$_.md"
 }
 
@@ -63,8 +63,8 @@ Write-Host "Fetching skills..."
 Write-Host "===============================================" -ForegroundColor Green
 Write-Host "✅ Installation Complete!" -ForegroundColor Green
 Write-Host "To run the scans, start 'claude' CLI in this directory and type:" -ForegroundColor Green
-Write-Host "  /security-assess   - Run full SAST + DAST + secrets + Indian compliance scan" -ForegroundColor Green
-Write-Host "  /compliance-audit  - Run deep Indian regulatory compliance audit" -ForegroundColor Green
-Write-Host "  /quick-scan        - Run rapid SAST & secret checks" -ForegroundColor Green
-Write-Host "  /fix-issue         - Interactively apply secure fixes to vulnerabilities" -ForegroundColor Green
+Write-Host "  /tiger-security-assess   - Run full SAST + DAST + secrets + Indian compliance scan" -ForegroundColor Green
+Write-Host "  /tiger-compliance-audit  - Run deep Indian regulatory compliance audit" -ForegroundColor Green
+Write-Host "  /tiger-quick-scan        - Run rapid SAST & secret checks" -ForegroundColor Green
+Write-Host "  /tiger-fix-issue         - Interactively apply secure fixes to vulnerabilities" -ForegroundColor Green
 Write-Host "===============================================" -ForegroundColor Green

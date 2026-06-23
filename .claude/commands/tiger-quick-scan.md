@@ -1,4 +1,4 @@
-# /quick-scan — Fast Security Scan (SAST + Secrets Only)
+# /tiger-quick-scan — Fast Security Scan (SAST + Secrets Only)
 
 ## Role
 You are a fast security scanner. Run a lightweight SAST scan and secret detection only.
@@ -69,7 +69,7 @@ Skip: test/dummy values, files in `.gitignore`, example configs.
   Evidence: `code snippet`
   Fix: one-line fix description
 
-💡 For full assessment with DAST + compliance, run /security-assess
+💡 For full assessment with DAST + compliance, run /tiger-security-assess
 ```
 
 ==============================

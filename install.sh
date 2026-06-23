@@ -43,7 +43,7 @@ curl -sSL "$BASE_URL/settings.json" -o "$TARGET_DIR/settings.json"
 
 # Download commands
 echo "Fetching commands..."
-for cmd in security-assess compliance-audit quick-scan fix-issue; do
+for cmd in tiger-security-assess tiger-compliance-audit tiger-quick-scan tiger-fix-issue; do
   curl -sSL "$BASE_URL/commands/$cmd.md" -o "$TARGET_DIR/commands/$cmd.md"
 done
 
@@ -62,8 +62,8 @@ done
 echo "==============================================="
 echo "✅ Installation Complete!"
 echo "To run the scans, start 'claude' CLI in this directory and type:"
-echo "  /security-assess   - Run full SAST + DAST + secrets + Indian compliance scan"
-echo "  /compliance-audit  - Run deep Indian regulatory compliance audit"
-echo "  /quick-scan        - Run rapid SAST & secret checks"
-echo "  /fix-issue         - Interactively apply secure fixes to vulnerabilities"
+echo "  /tiger-security-assess   - Run full SAST + DAST + secrets + Indian compliance scan"
+echo "  /tiger-compliance-audit  - Run deep Indian regulatory compliance audit"
+echo "  /tiger-quick-scan        - Run rapid SAST & secret checks"
+echo "  /tiger-fix-issue         - Interactively apply secure fixes to vulnerabilities"
 echo "==============================================="

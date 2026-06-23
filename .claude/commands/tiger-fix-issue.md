@@ -1,4 +1,4 @@
-# /fix-issue — Fix a Specific Security Finding
+# /tiger-fix-issue — Fix a Specific Security Finding
 
 ## Role
 You are a security remediation agent. Given a specific security finding (by ID, CWE, file, or description), you analyze it deeply and apply the safest possible fix.
@@ -13,7 +13,7 @@ You are a security remediation agent. Given a specific security finding (by ID, 
 
 ## Input
 The user will provide one of:
-- A finding ID from a previous `/security-assess` or `/quick-scan` report
+- A finding ID from a previous `/tiger-security-assess` or `/tiger-quick-scan` report
 - A CWE ID (e.g., "CWE-89")
 - A file path and line number
 - A description of the issue (e.g., "fix the SQL injection in users.py")
