@@ -1,8 +1,8 @@
 {
   "tiger-security-assess": {
     "mode": "read-only",
-    "allow_auto_fix": true,
-    "auto_fix_max_risk": "low",
+    "allow_auto_fix": false,
+    "auto_fix_max_risk": "none",
     "report_format": "structured",
     "confidence_threshold": "medium",
     "exclude_paths": ["node_modules/", "vendor/", ".git/", "*.min.js", "__pycache__/", "dist/", "build/"],

@@ -44,20 +44,40 @@ Scan source files for the **top 10 critical patterns** only:
 ---
 
 ### Step 3 — Secret Scan
-Quickly detect (in all codebase files without exception, including `.py` files, `.ipynb` notebooks, scripts, config files, and `.env` files):
+Quickly detect (in all codebase files without exception, including `.py` files, `.ipynb` notebooks, `.json`, scripts, config files, and `.env` files):
 - AWS keys: `AKIA[0-9A-Z]{16}`
 - Firebase: `AIza[0-9A-Za-z-_]{35}`
-- GitHub PAT: `ghp_[a-zA-Z0-9]{36}`
-- OpenAI: `sk-[a-zA-Z0-9]{48}` or `sk-proj-...`
-- Anthropic: `sk-ant-api03-...`
-- Stripe live: `sk_live_[a-zA-Z0-9]{24}`
-- Razorpay live: `rzp_live_[a-zA-Z0-9]{14}`
-- Generic API key: `(?i)(api[_-]?key)\s*[:=]\s*['"][A-Za-z0-9]{16,}['"]`
-- Private keys: `-----BEGIN (RSA|EC|OPENSSH) PRIVATE KEY-----`
-- Connection strings: `mongodb+srv://`, `postgresql://`, `mysql://`
-- JWT secrets: `(?i)(jwt[_-]?secret)\s*[:=]\s*['"][^'"]{8,}['"]`
+- GitHub PAT/OAuth/Actions: `gh(p|o|s)_[a-zA-Z0-9]{36}`
+- GitLab PAT: `glpat-[a-zA-Z0-9\-_]{20,}`
+- OpenAI: `sk-[a-zA-Z0-9]{48}` or `sk-(proj|svcacct|admin)-[a-zA-Z0-9_\-]{20,}`
+- Anthropic (Claude): `sk-ant-api03-[0-9A-Za-z_\-]{93}AA`
+- Hugging Face: `hf_[a-zA-Z0-9]{34,}`
+- Google Gemini (legacy): `AIza[0-9A-Za-z-_]{35}`
+- Google Gemini (new): `AQ\.[a-zA-Z0-9_-]{30,}`
+- Perplexity AI: `pplx-[a-zA-Z0-9]{48}`
+- Stripe: `(sk|rk)_(live|test)_[a-zA-Z0-9]{24,}`
+- Razorpay: `rzp_(live|test)_[a-zA-Z0-9]{14,}`
+- Twilio: `SK[a-f0-9]{32}`
+- SendGrid: `SG\.[a-zA-Z0-9\-_]{22}\.[a-zA-Z0-9\-_]{43}`
+- Slack: `xox(b|p|a)-[0-9a-zA-Z\-]{24,}` or `hooks\.slack\.com/services/T[A-Z0-9]+/B[A-Z0-9]+/[a-zA-Z0-9]+`
+- Telegram: `[0-9]{8,10}:[a-zA-Z0-9_\-]{35}`
+- Mailgun: `key-[a-f0-9]{32}`
+- PayPal: `A21AA[a-zA-Z0-9\-_]{60,}`
+- Generic keys: `(?i)(api[_-]?key|apikey|api_secret)\s*[:=]\s*["'][A-Za-z0-9]{16,}["']`
+- Generic secrets: `(?i)(secret|secret_key|SECRET_KEY)\s*[:=]\s*["'][^"']{8,}["']`
+- Generic passwords: `(?i)(password|passwd|pwd)\s*[:=]\s*["'][^"']{4,}["']`
+- Generic tokens: `(?i)(token|auth_token|access_token)\s*[:=]\s*["'][A-Za-z0-9._-]{16,}["']`
+- Connection strings: `(?i)(mongodb\+srv|postgresql|mysql|redis|amqp):\/\/[^"'\s]+`
+- JWT secrets: `(?i)(jwt[_-]?secret|JWT_SECRET)\s*[:=]\s*["'][^"']{8,}["']`
+- Private keys: `-----BEGIN (RSA|EC|OPENSSH|PGP|PRIVATE) KEY` or `-----BEGIN CERTIFICATE-----`
 
-Skip: test/dummy values, placeholders, environment variable references. Scan all codebase files (including `.env` files and gitignored files) for secrets and categorize them as Informational under the Possible Hardcoded Secrets section with their gitignore status.
+Skip and filter out:
+1. Test/dummy values, placeholders, and environment variable references (e.g. `${SECRET_KEY}`, `process.env`).
+2. **UI & Translation Labels**: Do not report variable definitions that are UI display labels, static text resources, or error message strings (e.g., `password_length_error = "Password must be..."`).
+3. **Environment Fallbacks**: For configuration lookups (e.g., `os.environ.get('API_KEY', 'default_value')`), do not flag the default value (like `'default_value'`) if it is a generic placeholder/dev default, unless it matches a pattern of a real live secret.
+4. **Local addresses**: Exclude standard local development addresses and localhost/loopback credentials.
+
+Scan all codebase files (including `.env` files and gitignored files) for secrets and categorize them as Informational under the Possible Hardcoded Secrets section with their gitignore status.
 **NEVER output the full secret — truncate to first 8 + last 4 characters.**
 
 ---

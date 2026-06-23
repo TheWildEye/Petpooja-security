@@ -20,16 +20,30 @@ GITHUB_REPO="Petpooja-security"
 BRANCH="main"
 # ================================================================
 
+# Parse command line arguments
+GLOBAL_INSTALL=false
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    --global) GLOBAL_INSTALL=true ;;
+    --user) GITHUB_USER="$2"; shift ;;
+    --repo) GITHUB_REPO="$2"; shift ;;
+    --branch) BRANCH="$2"; shift ;;
+    *) echo "Unknown parameter passed: $1"; exit 1 ;;
+  esac
+  shift
+done
+
 BASE_URL="https://raw.githubusercontent.com/$GITHUB_USER/$GITHUB_REPO/$BRANCH/.claude"
 
 TARGET_DIR="./.claude"
-if [ "$1" == "--global" ]; then
+if [ "$GLOBAL_INSTALL" = true ]; then
   TARGET_DIR="$HOME/.claude"
 fi
 
 echo "==============================================="
 echo " Installing Petpooja Security Agent"
 echo " Target Directory: $TARGET_DIR"
+echo " Source: $GITHUB_USER/$GITHUB_REPO @ $BRANCH"
 echo "==============================================="
 
 # Ensure directories exist
@@ -39,24 +53,24 @@ mkdir -p "$TARGET_DIR/skills"
 
 # Download settings
 echo "Fetching settings.json..."
-curl -sSL "$BASE_URL/settings.json" -o "$TARGET_DIR/settings.json"
+curl -fsSL "$BASE_URL/settings.json" -o "$TARGET_DIR/settings.json"
 
 # Download commands
 echo "Fetching commands..."
 for cmd in tiger-security-assess tiger-compliance-audit tiger-quick-scan tiger-fix-issue; do
-  curl -sSL "$BASE_URL/commands/$cmd.md" -o "$TARGET_DIR/commands/$cmd.md"
+  curl -fsSL "$BASE_URL/commands/$cmd.md" -o "$TARGET_DIR/commands/$cmd.md"
 done
 
 # Download agents
 echo "Fetching agents..."
 for agent in sast-engine secret-hunter dast-engine compliance-engine security-reviewer; do
-  curl -sSL "$BASE_URL/agents/$agent.md" -o "$TARGET_DIR/agents/$agent.md"
+  curl -fsSL "$BASE_URL/agents/$agent.md" -o "$TARGET_DIR/agents/$agent.md"
 done
 
 # Download skills
 echo "Fetching skills..."
 for skill in owasp-top10 mitre-cwe mobile-security legal; do
-  curl -sSL "$BASE_URL/skills/$skill.md" -o "$TARGET_DIR/skills/$skill.md"
+  curl -fsSL "$BASE_URL/skills/$skill.md" -o "$TARGET_DIR/skills/$skill.md"
 done
 
 echo "==============================================="

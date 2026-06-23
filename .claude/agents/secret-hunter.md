@@ -44,6 +44,8 @@ Exclude only: `node_modules/`, `vendor/`, `.git/`, `dist/`, `build/`, and minifi
 | OpenAI Admin key | `sk-admin-[a-zA-Z0-9_\-]{20,}` | New 2024+ format |
 | Anthropic (Claude) | `sk-ant-api03-[0-9A-Za-z_\-]{93}AA` | Exactly 108 chars, ends in `AA` |
 | Hugging Face | `hf_[a-zA-Z0-9]{34,}` | User access token |
+| Google Gemini (legacy) | `AIza[0-9A-Za-z-_]{35}` | standard Google API Key / Firebase / Maps |
+| Google Gemini (new) | `AQ\.[a-zA-Z0-9_-]{30,}` | New 2025 format |
 | Perplexity AI | `pplx-[a-zA-Z0-9]{48}` | |
 | **False positive — skip** | `sk-test-`, `sk-None-` prefix | OpenAI placeholder patterns |
 | **False positive — skip** | `hf_read_` prefix | Read-only HuggingFace token (low blast radius) |
@@ -71,12 +73,15 @@ Exclude only: `node_modules/`, `vendor/`, `.git/`, `dist/`, `build/`, and minifi
 ## Verification Steps (for each detected secret)
 
 ### Step 1 — Is it real?
-Check if the value is a test/dummy/example or environment variable placeholder:
+Check if the value is a test/dummy/example, environment variable placeholder, or general false positive:
 - Contains: `test`, `example`, `dummy`, `fake`, `changeme`, `placeholder`, `xxx`, `your_`, `REPLACE_ME`, `TODO`, `${VAR}`, `process.env`
 - Is all zeros, all ones, or obviously fake
 - Is in a test/example file: `*test*`, `*example*`, `*sample*`, `*demo*`, `README*`
+- **UI Display & Translation Strings**: Skip any finding where the matched key corresponds to a static UI display label, translation resource, or input validation error warning (e.g. `password_validation_error = 'Password must be...'` or `secret_key_label = 'Enter your Secret Key'`).
+- **Environment Fallbacks**: For configuration lookups (e.g. `os.environ.get('API_KEY', 'default_value')`), do not flag the default value (like `'default_value'`) if it is a generic placeholder/dev default, unless it matches a pattern of a real live secret.
+- **Local IP / Loopback Resources**: Exclude standard local development addresses and localhost/loopback credentials unless they explicitly contain valid credentials matching service patterns.
 
-If YES → Mark as `FALSE_POSITIVE` and skip. Do NOT report environment variable references as hardcoded secrets.
+If YES to any of the above → Mark as `FALSE_POSITIVE` and skip. Do NOT report environment variable references, UI strings, local defaults, or translation labels as hardcoded secrets.
 
 ### Step 2 — Determine Gitignore Status
 Determine whether the file containing the secret is gitignored:

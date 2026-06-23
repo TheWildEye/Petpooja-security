@@ -12,18 +12,21 @@
 # ==============================================================================
 
 param(
-    [switch]$Global
+    [switch]$Global,
+    [string]$User = "TheWildEye",
+    [string]$Repo = "Petpooja-security",
+    [string]$Branch = "main"
 )
 
 $ErrorActionPreference = "Stop"
 
 # --- CONFIGURATION (Change this to match your repository URL) ---
-$GithubUser = "TheWildEye"
-$GithubRepo = "Petpooja-security"
-$Branch     = "main"
+$GithubUser = $User
+$GithubRepo = $Repo
+$GithubBranch = $Branch
 # ================================================================
 
-$BaseUrl = "https://raw.githubusercontent.com/$GithubUser/$GithubRepo/$Branch/.claude"
+$BaseUrl = "https://raw.githubusercontent.com/$GithubUser/$GithubRepo/$GithubBranch/.claude"
 
 $TargetDir = "./.claude"
 if ($Global) {
@@ -33,6 +36,7 @@ if ($Global) {
 Write-Host "===============================================" -ForegroundColor Cyan
 Write-Host " Installing Petpooja Security Agent" -ForegroundColor Cyan
 Write-Host " Target Directory: $TargetDir" -ForegroundColor Cyan
+Write-Host " Source: $GithubUser/$GithubRepo @ $GithubBranch" -ForegroundColor Cyan
 Write-Host "===============================================" -ForegroundColor Cyan
 
 # Ensure directories exist
