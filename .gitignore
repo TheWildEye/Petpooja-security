@@ -1,0 +1,27 @@
+# Claude Code Security Agent .gitignore
+
+# Temp and report files
+*report.md
+*report.json
+report-*.md
+scan-results.txt
+
+# Editor / System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Language cache / dependencies
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+node_modules/
+dist/
+build/
+.cache/
+
+# Local custom overrides
+.claude/local_settings.json

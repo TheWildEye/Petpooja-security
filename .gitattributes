@@ -1,0 +1,13 @@
+# Normalize line endings for all text files to LF on commit
+* text=auto eol=lf
+
+# Explicitly mark shell scripts as LF
+*.sh text eol=lf
+
+# Windows scripts keep CRLF on checkout
+*.ps1 text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.gif binary

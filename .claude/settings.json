@@ -1,0 +1,41 @@
+{
+  "security-assess": {
+    "mode": "read-only",
+    "allow_auto_fix": true,
+    "auto_fix_max_risk": "low",
+    "report_format": "structured",
+    "confidence_threshold": "medium",
+    "exclude_paths": ["node_modules/", "vendor/", ".git/", "*.min.js", "__pycache__/", "dist/", "build/"],
+    "scan_modes": {
+      "web": true,
+      "api": true,
+      "mobile": true,
+      "compliance": true,
+      "infra": false
+    },
+    "compliance": {
+      "frameworks": {
+        "dpdp_act": true,
+        "it_act": true,
+        "pci_dss": "auto-detect",
+        "cert_in": true,
+        "rbi": "auto-detect",
+        "sebi": "auto-detect",
+        "irdai": "auto-detect"
+      },
+      "auto_detect_industry": true,
+      "report_penalties": true,
+      "scan_strategy": "non-disruptive"
+    },
+    "sast": {
+      "mode": "delta",
+      "gate": "soft",
+      "hard_gate_threshold": "critical+high_confidence"
+    },
+    "dast": {
+      "mode": "async",
+      "schedule": "nightly",
+      "smoke_on_pr": true
+    }
+  }
+}

@@ -1,0 +1,50 @@
+# Short Log Retention Test Case — CERT-IN Violation
+# This file contains an INTENTIONAL compliance violation for testing.
+# CERT-IN requires minimum 180 days log retention.
+
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  handlers:
+    file:
+      class: logging.handlers.TimedRotatingFileHandler
+      filename: /var/log/app/application.log
+      when: midnight
+      backupCount: 30  # VIOLATION: Only 30 days retention, CERT-IN requires 180
+      
+    access_log:
+      class: logging.handlers.RotatingFileHandler
+      filename: /var/log/app/access.log
+      maxBytes: 10485760
+      backupCount: 7  # VIOLATION: Only 7 rotations
+
+  rotation:
+    maxAge: "30d"  # VIOLATION: 30 days, must be >= 180 days
+    maxSize: "100MB"
+    compress: true
+
+# Log rotation config (logrotate style)
+logrotate:
+  /var/log/app/*.log:
+    rotate: 4           # VIOLATION: Weekly rotation × 4 = 28 days only
+    weekly: true
+    compress: true
+    missingok: true
+    notifempty: true
+
+# VIOLATION: No NTP synchronization configured
+# CERT-IN requires time sync with Indian NTP servers
+# Missing: ntp.server = "time.nplindia.in"
+
+# VIOLATION: Cloud logs going to non-Indian region
+cloud_logging:
+  provider: "aws"
+  region: "us-east-1"  # VIOLATION: CERT-IN requires logs stored in India
+  bucket: "app-logs-bucket"
+
+# SAFE EXAMPLE:
+# backupCount: 180  # Minimum 180 days
+# maxAge: "180d"
+# rotate: 26  # Weekly × 26 = 182 days
+# region: "ap-south-1"  # Mumbai (India)

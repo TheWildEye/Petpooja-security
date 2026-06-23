@@ -1,0 +1,50 @@
+<!-- No Consent Test Case — DPDP Act Sec 6 Violation -->
+<!-- This file contains an INTENTIONAL compliance violation for testing. -->
+<!DOCTYPE html>
+<html>
+<head><title>Signup</title></head>
+<body>
+    <h1>Create Account</h1>
+    
+    <!-- VIOLATION: Form collects PII without ANY consent mechanism -->
+    <!-- No consent checkbox, no privacy policy link, no terms acceptance -->
+    <form action="/api/signup" method="POST">
+        <label>Full Name</label>
+        <input type="text" name="full_name" required />
+        
+        <label>Email</label>
+        <input type="email" name="email" required />
+        
+        <label>Phone Number</label>
+        <input type="tel" name="phone" required />
+        
+        <label>Aadhaar Number</label>
+        <input type="text" name="aadhaar" required />
+        
+        <label>Date of Birth</label>
+        <input type="date" name="dob" required />
+        
+        <label>Address</label>
+        <textarea name="address" required></textarea>
+        
+        <!-- MISSING: Consent checkbox -->
+        <!-- MISSING: Privacy policy link -->
+        <!-- MISSING: Terms of service link -->
+        <!-- MISSING: Purpose of data collection notice -->
+        
+        <button type="submit">Sign Up</button>
+    </form>
+    
+    <!-- VIOLATION: Tracking before consent -->
+    <script>
+        // Tracking cookie set immediately, before any consent
+        document.cookie = "tracking_id=" + Math.random().toString(36);
+        
+        // Analytics firing before consent
+        analytics.track("page_view", { page: "signup" });
+        
+        // Facebook Pixel without consent
+        fbq('track', 'PageView');
+    </script>
+</body>
+</html>

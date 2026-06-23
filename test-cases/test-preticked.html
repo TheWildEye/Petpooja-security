@@ -1,0 +1,48 @@
+<!-- Pre-ticked Consent Test Case — DPDP Act Sec 6 Violation (Invalid Consent) -->
+<!-- This file contains an INTENTIONAL compliance violation for testing. -->
+<!DOCTYPE html>
+<html>
+<head><title>Subscribe</title></head>
+<body>
+    <h1>Subscribe to Newsletter</h1>
+    
+    <form action="/api/subscribe" method="POST">
+        <label>Email</label>
+        <input type="email" name="email" required />
+        
+        <!-- VIOLATION: Pre-ticked consent checkboxes — consent not freely given -->
+        <!-- DPDP Act requires consent to be actively given, not pre-selected -->
+        
+        <label>
+            <input type="checkbox" name="marketing" checked="checked" />
+            <!-- VIOLATION: checked="checked" — pre-ticked -->
+            I agree to receive marketing emails
+        </label>
+        
+        <label>
+            <input type="checkbox" name="data_sharing" checked />
+            <!-- VIOLATION: checked attribute present — pre-ticked -->
+            I consent to sharing my data with third-party partners
+        </label>
+        
+        <label>
+            <input type="checkbox" name="analytics" checked={true} />
+            <!-- VIOLATION: checked={true} — React-style pre-ticked -->
+            I consent to analytics tracking
+        </label>
+        
+        <!-- VIOLATION: Bundled consent — one checkbox for everything -->
+        <label>
+            <input type="checkbox" name="all_consent" checked />
+            I agree to the terms of service, privacy policy, marketing communications,
+            data sharing with partners, and analytics tracking.
+        </label>
+        
+        <button type="submit">Subscribe</button>
+    </form>
+    
+    <!-- VIOLATION: No link to privacy policy -->
+    <!-- VIOLATION: No link to terms of service -->
+    <!-- VIOLATION: No option to withdraw consent later -->
+</body>
+</html>
