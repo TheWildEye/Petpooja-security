@@ -17,33 +17,34 @@ Also scan ALL source files for hardcoded credentials.
 
 ## Secret Detection Patterns
 
-### Cloud Provider Keys
-| Provider | Pattern | Example |
-|----------|---------|---------|
-| AWS Access Key | `AKIA[0-9A-Z]{16}` | `AKIAIOSFODNN7EXAMPLE` |
-| AWS Secret Key | `(?i)aws_secret_access_key\s*=\s*[A-Za-z0-9/+=]{40}` | |
-| GCP Service Account | `"type":\s*"service_account"` in JSON | |
-| Azure | `(?i)(azure|az)[_-]?(storage|account|key|secret|connection)\s*=\s*["'][^"']+` | |
-
-### API Keys & Tokens
-| Service | Pattern | Example |
-|---------|---------|---------|
-| Firebase | `AIza[0-9A-Za-z-_]{35}` | `AIzaSyC...` |
-| GitHub PAT | `ghp_[a-zA-Z0-9]{36}` | `ghp_xxxx...` |
+| GitHub PAT | `ghp_[a-zA-Z0-9]{36}` | |
 | GitHub OAuth | `gho_[a-zA-Z0-9]{36}` | |
-| GitLab PAT | `glpat-[a-zA-Z0-9-_]{20,}` | |
-| Stripe Live | `sk_live_[a-zA-Z0-9]{24,}` | |
-| Stripe Test | `sk_test_[a-zA-Z0-9]{24,}` | (flag as LOW) |
-| Razorpay | `rzp_(live|test)_[a-zA-Z0-9]{14,}` | |
+| GitHub Actions | `ghs_[a-zA-Z0-9]{36}` | |
+| GitLab PAT | `glpat-[a-zA-Z0-9\-_]{20,}` | |
+| Stripe Live | `sk_live_[a-zA-Z0-9]{24,}` | CRITICAL — live billing key |
+| Stripe Test | `sk_test_[a-zA-Z0-9]{24,}` | Flag as LOW — not a live key |
+| Razorpay Live | `rzp_live_[a-zA-Z0-9]{14,}` | CRITICAL |
+| Razorpay Test | `rzp_test_[a-zA-Z0-9]{14,}` | Flag as LOW |
 | Twilio | `SK[a-f0-9]{32}` | |
-| SendGrid | `SG\.[a-zA-Z0-9-_]{22}\.[a-zA-Z0-9-_]{43}` | |
+| SendGrid | `SG\.[a-zA-Z0-9\-_]{22}\.[a-zA-Z0-9\-_]{43}` | |
 | Slack Bot | `xoxb-[0-9]{10,}-[a-zA-Z0-9]{24,}` | |
 | Slack Webhook | `hooks\.slack\.com/services/T[A-Z0-9]+/B[A-Z0-9]+/[a-zA-Z0-9]+` | |
-| Telegram Bot | `[0-9]{8,10}:[a-zA-Z0-9_-]{35}` | |
-| OpenAI | `sk-[a-zA-Z0-9]{48,}` | |
-| Google Maps | `AIza[0-9A-Za-z-_]{35}` | |
+| Telegram Bot | `[0-9]{8,10}:[a-zA-Z0-9_\-]{35}` | |
 | Mailgun | `key-[a-f0-9]{32}` | |
-| PayPal | `A21AA[a-zA-Z0-9-_]{60,}` | |
+| PayPal | `A21AA[a-zA-Z0-9\-_]{60,}` | |
+
+### AI Provider Keys (High Priority — Expensive if leaked)
+| Provider | Pattern | Notes |
+|----------|---------|-------|
+| OpenAI (legacy) | `sk-[a-zA-Z0-9]{48}` | Old format, still active |
+| OpenAI Project key | `sk-proj-[a-zA-Z0-9_\-]{20,}` | New 2024+ format |
+| OpenAI Service account | `sk-svcacct-[a-zA-Z0-9_\-]{20,}` | New 2024+ format |
+| OpenAI Admin key | `sk-admin-[a-zA-Z0-9_\-]{20,}` | New 2024+ format |
+| Anthropic (Claude) | `sk-ant-api03-[0-9A-Za-z_\-]{93}AA` | Exactly 108 chars, ends in `AA` |
+| Hugging Face | `hf_[a-zA-Z0-9]{34,}` | User access token |
+| Perplexity AI | `pplx-[a-zA-Z0-9]{48}` | |
+| **False positive — skip** | `sk-test-`, `sk-None-` prefix | OpenAI placeholder patterns |
+| **False positive — skip** | `hf_read_` prefix | Read-only HuggingFace token (low blast radius) |
 
 ### Generic Credentials
 | Type | Pattern |
