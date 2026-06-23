@@ -19,7 +19,7 @@ Identify:
 - Languages and frameworks in use
 - Entry point files (routes, controllers, views, main files)
 - Config files (`*.config.*`, `settings.*`)
-- **Secrets scanning**: Scan ALL files for secrets, including `.env` files and files matched by `.gitignore`. Categorize all detected secrets as **Informational** under the `Possible Hardcoded Secrets` section, indicating whether they are gitignored or not.
+- **Secrets scanning**: Scan ALL files in the codebase (no extension or path restrictions) for secrets, including source code, scripts, `.ipynb` notebooks, config files, `.env` files, and files matched by `.gitignore`. Categorize all detected secrets as **Informational** under the `Possible Hardcoded Secrets` section, indicating whether they are gitignored or not.
 
 Exclude: `node_modules/`, `vendor/`, `.git/`, `*.min.js`, `__pycache__/`, `dist/`, `build/`
 
@@ -44,7 +44,7 @@ Scan source files for the **top 10 critical patterns** only:
 ---
 
 ### Step 3 — Secret Scan
-Quickly detect (in source files and committed configs — NOT in `.env` files):
+Quickly detect (in all codebase files without exception, including `.py` files, `.ipynb` notebooks, scripts, config files, and `.env` files):
 - AWS keys: `AKIA[0-9A-Z]{16}`
 - Firebase: `AIza[0-9A-Za-z-_]{35}`
 - GitHub PAT: `ghp_[a-zA-Z0-9]{36}`
@@ -57,7 +57,7 @@ Quickly detect (in source files and committed configs — NOT in `.env` files):
 - Connection strings: `mongodb+srv://`, `postgresql://`, `mysql://`
 - JWT secrets: `(?i)(jwt[_-]?secret)\s*[:=]\s*['"][^'"]{8,}['"]`
 
-Skip: test/dummy values, placeholders, environment variable references. Scan all .env files and gitignored files for secrets but categorize them as Informational under the Possible Hardcoded Secrets section with their gitignore status.
+Skip: test/dummy values, placeholders, environment variable references. Scan all codebase files (including `.env` files and gitignored files) for secrets and categorize them as Informational under the Possible Hardcoded Secrets section with their gitignore status.
 **NEVER output the full secret — truncate to first 8 + last 4 characters.**
 
 ---
@@ -124,7 +124,7 @@ Finding #[N]
   • All findings require MANUAL developer review — this tool does not apply fixes.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-After rendering the above report, ask:
+After rendering the above report, ask the export question. Remember to NEVER auto-export or write files to disk without explicit approval. The export MUST be completely exhaustive and contain every single detail without truncation:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📄 EXPORT REPORT

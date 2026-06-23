@@ -227,7 +227,7 @@ If a section has zero violations, write a brief positive statement.
   3. [Third priority]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-After rendering the above report, ask:
+After rendering the above report, ask the export question. Remember to NEVER auto-export or write files to disk without explicit approval. The export MUST be completely exhaustive and contain every single detail without truncation:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📄 EXPORT REPORT

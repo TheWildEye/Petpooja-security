@@ -36,15 +36,17 @@ Before using cached knowledge, verify this session is fresh:
 
 ## SECRETS & ENV FILE SCANNING POLICY
 
-**Scan all files for secrets, including `.env` files and files matched by `.gitignore`.**
+**Scan ALL files in the codebase for secrets without exception, including `.env` files, files matched by `.gitignore`, and all source files of any extension.**
 
 To ensure comprehensive visibility while minimizing false positives and developer disruption:
-1. **No Severity Scoring for Hardcoded Secrets**: All detected secrets, credentials, API keys, and connection strings must be reported under the **Informational** category in a dedicated **Possible Hardcoded Secrets** section. Do NOT assign them Critical, High, Medium, or Low severity ratings.
-2. **Gitignore Status Alert**: Every secret finding must include a clear status alert:
+1. **Universal Scope**: Do NOT restrict secret scanning to `.env` or configuration files. Secrets, credentials, API keys, and connection strings can be hardcoded in ANY file (e.g., Python `.py` source files, Jupyter Notebooks `.ipynb`, Javascript/Typescript `.js`/`.ts` files, build files, markdown documentation, configs, etc.). Scan every single file in the workspace (excluding only standard system/dependency directories like `node_modules/`, `vendor/`, `.git/`, `dist/`, `build/`).
+2. **Jupyter Notebook Scanning**: For Jupyter Notebook files (`.ipynb`), inspect the JSON structure, specifically the `"source"` array of code cells, to detect hardcoded API keys, secrets, or variable assignments containing secrets.
+3. **No Severity Scoring for Hardcoded Secrets**: All detected secrets, credentials, API keys, and connection strings must be reported under the **Informational** category in a dedicated **Possible Hardcoded Secrets** section. Do NOT assign them Critical, High, Medium, or Low severity ratings.
+4. **Gitignore Status Alert**: Every secret finding must include a clear status alert:
    - `[GITIGNORED]` if the file containing the secret is matched by `.gitignore` or is a `.env` variant.
    - `[NOT GITIGNORED]` if the file containing the secret is committed and not ignored.
-3. **Minimize False Positives**: Verify secret patterns carefully. Do not report placeholders, test values, environment variable references (e.g. `${SECRET_KEY}`), or generic local references. Do not report if the pattern matches a dummy template.
-4. **DO scan** `.env.example` or `.env.template` files (and report any hardcoded secrets there as Informational).
+5. **Minimize False Positives**: Verify secret patterns carefully. Do not report placeholders, test values, environment variable references (e.g. `${SECRET_KEY}`), or generic local references. Do not report if the pattern matches a dummy template.
+6. **DO scan** `.env.example` or `.env.template` files (and report any hardcoded secrets there as Informational).
 
 ---
 
@@ -236,6 +238,10 @@ The exported report will include:
 
 Reply "yes" or "export report" to generate the file.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**CRITICAL EXPORT RULES (MUST follow strictly):**
+1. **Never Auto-Export**: Do NOT automatically generate or write any report file to disk during the scanning process. Always ask the user first. You must ONLY write the `.txt` file if the user explicitly replies "yes" or "export report".
+2. **Completeness Requirement**: The exported report must be completely exhaustive. You cannot skip, summarize, or truncate any finding, line number, code evidence, legal risk, or remediation advice. Every detail from the raw findings must be preserved in full in the `.txt` file.
 ```
 
 If the user says yes, generate a `.txt` file following the REPORT EXPORT FORMAT below.

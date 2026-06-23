@@ -18,7 +18,7 @@ Map the full repository. Identify and record:
 - **Frameworks detected** (Django, Flask, Express, Next.js, React, Spring, Rails, etc.)
 - **Entry points**: API routes, controllers, views, main files
 - **Config files**: `config.*`, `settings.*`, `docker-compose.*`, `*.yaml`, `*.toml`
-  - **Secrets scanning**: Scan ALL files for secrets, including `.env` files and files matched by `.gitignore`. Categorize all detected secrets as **Informational** under the `Possible Hardcoded Secrets` section, indicating whether they are gitignored or not.
+  - **Secrets scanning**: Scan ALL files in the codebase (no extension or path restrictions) for secrets, including source code files, scripts, `.ipynb` notebooks, config files, `.env` files, and files matched by `.gitignore`. Categorize all detected secrets as **Informational** under the `Possible Hardcoded Secrets` section, indicating whether they are gitignored or not.
 - **Data stores**: DB connections, ORMs, caching layers
 - **Payment code**: Stripe, Razorpay, PayU, UPI — triggers PCI DSS + RBI checks
 - **Financial/trading code**: stock APIs, portfolio — triggers SEBI checks
@@ -40,12 +40,10 @@ Provide language/framework context for targeted rule matching.
 
 ### Step 3 — Secret Hunt
 Invoke `.claude/agents/secret-hunter.md` on:
-- All config files: `*.config.*`, `settings.*`, `*.yaml`, `*.toml`, `*.json`
-- All source files (hardcoded credentials scan)
-- `docker-compose.*`, `Dockerfile`, CI/CD configs
-- All `.env` files (e.g. `.env`, `.env.local`, etc.) and any gitignored files
+- **ALL files** in the codebase without exception (no restriction on file extensions or directories, except standard system/build exclusions).
+- Specifically scan all Python files (`.py`), Jupyter Notebooks (`.ipynb` JSON cells), Javascript/Typescript, configurations, shell scripts, Markdown documentation, `.env` files, and gitignored files.
 
-Note: Do not skip `.env` or gitignored files. Scan them and classify all detected secrets as Informational under the "Possible Hardcoded Secrets" section, with a clear alert if gitignored or not.
+Note: Do not skip `.env`, gitignored, script, or notebook files. Scan them all and classify all detected secrets as Informational under the "Possible Hardcoded Secrets" section, with a clear alert if gitignored or not.
 
 ---
 
@@ -219,7 +217,7 @@ Finding #[N]
   Use /tiger-compliance-audit for a deep-dive on regulatory requirements.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-After rendering the above report, ask the export question from CLAUDE.md, then append the footer:
+After rendering the above report, ask the export question from CLAUDE.md, then append the footer. Remember to NEVER auto-export or write files to disk without explicit approval. The export MUST be completely exhaustive and contain every single detail without truncation:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📄 EXPORT REPORT
