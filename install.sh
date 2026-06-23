@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================================
-# Claude Code Security Agent - Installation Script (macOS / Linux)
+# Claude Code Petpooja Security - Installation Script (macOS / Linux)
 # ==============================================================================
 # Installs custom slash commands, agents, and skills into your project directory.
 #
@@ -28,7 +28,7 @@ if [ "$1" == "--global" ]; then
 fi
 
 echo "==============================================="
-echo " Installing Claude Code Security & Compliance Agent"
+echo " Installing Petpooja Security Agent"
 echo " Target Directory: $TARGET_DIR"
 echo "==============================================="
 

@@ -1,5 +1,5 @@
 # ==============================================================================
-# Claude Code Security Agent - Installation Script (Windows PowerShell)
+# Claude Code Petpooja Security - Installation Script (Windows PowerShell)
 # ==============================================================================
 # Installs custom slash commands, agents, and skills into your project directory.
 #
@@ -31,7 +31,7 @@ if ($Global) {
 }
 
 Write-Host "===============================================" -ForegroundColor Cyan
-Write-Host " Installing Claude Code Security & Compliance Agent" -ForegroundColor Cyan
+Write-Host " Installing Petpooja Security Agent" -ForegroundColor Cyan
 Write-Host " Target Directory: $TargetDir" -ForegroundColor Cyan
 Write-Host "===============================================" -ForegroundColor Cyan
 

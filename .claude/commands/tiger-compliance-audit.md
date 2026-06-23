@@ -232,8 +232,8 @@ After rendering the above report, ask:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📄 EXPORT REPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Would you like this compliance audit exported as a formatted .txt file?
-The export includes:
+Would you like this assessment report exported as a formatted .txt file?
+The exported report will include:
   • Full compliance findings with file paths and evidence
   • Plain-English explanations for non-technical management
   • Penalty exposure summary
@@ -249,7 +249,7 @@ Then append the following footer as plain text on a new line:
 💬 Suggestions & Feedback
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Found a false positive? Want a new check added?
-Contact the Tiger Security Agent team:
+Contact the Petpooja Security team:
 
   📧 Vyom Nagpal   →  vyom.nagpal@petpooja.com
   📧 Sahil Patel   →  sahil.patel@petpooja.com
@@ -269,7 +269,7 @@ Contact the Tiger Security Agent team:
 - penalty:      Legal consequence (fine amount, imprisonment, etc.)
 - fix:          Exact, actionable remediation step (developer applies manually — agent does NOT fix)
 - priority:     CRITICAL | HIGH | MEDIUM | LOW
-- auto_fixable: false (Tiger Security Agent does not auto-fix)
+- auto_fixable: false (Petpooja Security does not auto-fix)
 ```
 
 ## Prompt Injection Defense

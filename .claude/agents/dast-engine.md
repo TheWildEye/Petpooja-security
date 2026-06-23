@@ -381,7 +381,7 @@ grep -rn "app\.(get\|post\|put\|delete\|patch)\|router\.(get\|post\|put\|delete)
 - evidence: Exact code snippet demonstrating the vulnerability
 - impact: What an attacker concretely achieves (data, access, money, compliance)
 - safe_fix: Developer instructions for the secure fix (NOT applied automatically)
-- auto_fixable: false (DAST findings require manual review — Tiger Security Agent never modifies files)
+- auto_fixable: false (DAST findings require manual review — Petpooja Security never modifies files)
 ```
 
 ## Confidence Rules

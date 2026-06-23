@@ -19,11 +19,9 @@ Identify:
 - Languages and frameworks in use
 - Entry point files (routes, controllers, views, main files)
 - Config files (`*.config.*`, `settings.*`)
+- **Secrets scanning**: Scan ALL files for secrets, including `.env` files and files matched by `.gitignore`. Categorize all detected secrets as **Informational** under the `Possible Hardcoded Secrets` section, indicating whether they are gitignored or not.
 
-**SKIP all `.env` files** — they are gitignored and already protected.
-`.env.example` or `.env.template` files MAY be scanned.
-
-Exclude: `node_modules/`, `vendor/`, `.git/`, `*.min.js`, `__pycache__/`, `dist/`, `build/`, **all `.env.*` files**
+Exclude: `node_modules/`, `vendor/`, `.git/`, `*.min.js`, `__pycache__/`, `dist/`, `build/`
 
 ---
 
@@ -59,7 +57,7 @@ Quickly detect (in source files and committed configs — NOT in `.env` files):
 - Connection strings: `mongodb+srv://`, `postgresql://`, `mysql://`
 - JWT secrets: `(?i)(jwt[_-]?secret)\s*[:=]\s*['"][^'"]{8,}['"]`
 
-Skip: test/dummy values, files in `.gitignore` (including ALL `.env` files), example configs.
+Skip: test/dummy values, placeholders, environment variable references. Scan all .env files and gitignored files for secrets but categorize them as Informational under the Possible Hardcoded Secrets section with their gitignore status.
 **NEVER output the full secret — truncate to first 8 + last 4 characters.**
 
 ---
@@ -78,7 +76,7 @@ Fill with real, specific findings from this codebase — be precise about file p
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📊 SUMMARY
-  🔴 CRITICAL: [N]   🟠 HIGH: [N]   🟡 MEDIUM: [N]   🟢 LOW: [N]
+  🔴 CRITICAL: [N]   🟠 HIGH: [N]   🟡 MEDIUM: [N]   🟢 LOW: [N]   ℹ️  INFO: [N] (secrets scan findings)
 
 ─────────────────────────────────────────────────────────
 🔴 CRITICAL
@@ -102,9 +100,21 @@ Fill with real, specific findings from this codebase — be precise about file p
 [Same format for medium severity findings.]
 
 ─────────────────────────────────────────────────────────
-🟢 LOW / INFORMATIONAL
+🟢 LOW / INFORMATIONAL (General Code Issues)
 ─────────────────────────────────────────────────────────
 [Brief list with file references.]
+
+─────────────────────────────────────────────────────────
+ℹ️  POSSIBLE HARDCODED SECRETS (Informational Only)
+─────────────────────────────────────────────────────────
+[All secrets detected in the codebase — including .env and gitignored files.]
+
+Finding #[N]
+├── Status:         [ALERT: GITIGNORED] or [ALERT: NOT GITIGNORED]
+├── File:           path/to/file.ext : line N
+├── Secret Type:    [API Key / Token / Password / Connection String / Private Key]
+├── Evidence:       [first 8 chars]...[last 4 chars] (NEVER show full secret)
+└── Safe Fix:       Move this secret to environment variables or a secure vault.
 
 ─────────────────────────────────────────────────────────
 💡 NEXT STEPS
@@ -119,9 +129,13 @@ After rendering the above report, ask:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📄 EXPORT REPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Would you like this report exported as a formatted .txt file?
-The export includes full technical findings AND plain-English explanations
-for non-technical management stakeholders.
+Would you like this assessment report exported as a formatted .txt file?
+The exported report will include:
+  • Full technical findings with file paths and line numbers
+  • Plain-English explanations for non-technical management
+  • Gitignored / Not Gitignored alerts for all hardcoded secrets
+  • Regulatory compliance violations and estimated penalty exposure
+  • Prioritized remediation roadmap
 
 Reply "yes" or "export report" to generate the file.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -132,7 +146,7 @@ Then append the feedback footer as plain text on a new line:
 💬 Suggestions & Feedback
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Found a false positive? Want a new check added?
-Contact the Tiger Security Agent team:
+Contact the Petpooja Security team:
 
   📧 Vyom Nagpal   →  vyom.nagpal@petpooja.com
   📧 Sahil Patel   →  sahil.patel@petpooja.com
@@ -142,7 +156,7 @@ Contact the Tiger Security Agent team:
 
 ## Output Contract (per finding)
 ```
-- severity:   CRITICAL | HIGH | MEDIUM | LOW
+- severity:   CRITICAL | HIGH | MEDIUM | LOW | INFORMATIONAL
 - confidence: HIGH | MEDIUM | LOW
 - file:       path/to/file.ext
 - line:       line number

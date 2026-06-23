@@ -22,22 +22,22 @@ Merge findings using these rules:
 |-----------|--------|
 | Same file + same line range + same CWE | Merge → keep highest confidence, note both engines detected it |
 | SAST + DAST finding for same vuln at same sink | Merge → upgrade confidence to HIGH |
-| Secret (secret-hunter) + hardcoded credential (SAST) at same location | Merge → single CRITICAL finding |
-| Compliance violation + SAST evidence (e.g., plaintext password + IT Act 43A) | Link → annotate SAST finding with regulatory consequence |
+| Secret (secret-hunter) + hardcoded credential (SAST) at same location | Merge → single INFORMATIONAL finding under Possible Hardcoded Secrets section |
+| Compliance violation + SAST evidence (e.g., plaintext password + IT Act 43A) | Link → annotate SAST finding with regulatory consequence (keep compliance finding high/critical, but list secret as informational) |
 | Same CWE, different file/line | Keep separate — do NOT merge different instances |
 
 ---
 
 ## Step 2 — Cross-Reference & Confidence Upgrade
 
-| Evidence Combination | Confidence Upgrade |
+| Evidence Combination | Confidence Upgrade / Severity Mapping |
 |---------------------|-------------------|
 | DAST simulation + SAST code evidence for same flow | LOW/MEDIUM → HIGH |
-| Secret found in committed code + variable used in requests | HIGH → CRITICAL |
+| Secret found in committed code + variable used in requests | Treat as INFORMATIONAL under Possible Hardcoded Secrets, upgrade confidence to HIGH |
 | SAST finding in dead code / unreachable function | HIGH → MEDIUM (downgrade) |
 | SAST finding behind confirmed auth middleware | Reduce exploitability by 1 |
 | Same pattern in test file only | Downgrade to LOW, mark as informational |
-| Compliance + SAST + secret all at same component | Escalate to CRITICAL regardless of individual scores |
+| Compliance + SAST + secret all at same component | Escalate the compliance/SAST finding to CRITICAL; keep the secret finding as INFORMATIONAL under Possible Hardcoded Secrets |
 
 ---
 
@@ -114,7 +114,7 @@ Final_Score = Exploitation_Likelihood × Technical_Impact
 | 1–5 | **LOW** |
 
 **Override Rules:**
-- Any exposed live API key (Stripe live, OpenAI, AWS) in committed code → **CRITICAL** regardless of score
+- Any exposed live API key (Stripe live, OpenAI, AWS) in committed code → list as INFORMATIONAL under the Possible Hardcoded Secrets section, with a HIGH confidence and NOT GITIGNORED status alert.
 - Any finding with confirmed RCE path → **CRITICAL**
 - Any DPDP/CERT-IN violation with penalty ≥ ₹10 Cr → flag as **HIGH** minimum
 - Any JWT `none` algorithm or algorithm confusion → **CRITICAL**
@@ -123,7 +123,7 @@ Final_Score = Exploitation_Likelihood × Technical_Impact
 
 ## Step 6 — Fix Complexity Classification
 
-> ⚠️ Tiger Security Agent is READ-ONLY. It does NOT auto-fix anything.
+> ⚠️ Petpooja Security is READ-ONLY. It does NOT auto-fix anything.
 > The classifications below are for developer guidance only — they help prioritize what to fix first
 > and describe how complex the fix is, not whether the agent will apply it.
 
@@ -180,7 +180,7 @@ Total findings: N
   ℹ️  INFO     : N (test files, informational)
 
 All findings require MANUAL developer review.
-No auto-fixes were applied — Tiger Security Agent is READ-ONLY.
+No auto-fixes were applied — Petpooja Security is READ-ONLY.
 Compliance violations: N (estimated max penalty: ₹X Cr)
 Scan coverage: X files, Y lines
 ```
@@ -191,10 +191,11 @@ Scan coverage: X files, Y lines
 3. MEDIUM findings — summary
 4. LOW findings — list only
 5. ⚠️ Manual review required (ALL findings — with remediation guidance and developer instructions)
-6. ⚖️ Regulatory violations (by framework)
-7. 🏗️ Supply chain risks
-8. ℹ️ Test file findings (informational only)
-9. 📊 Coverage report
+6. ℹ️ Possible Hardcoded Secrets (Informational Only — with gitignored / not gitignored alerts)
+7. ⚖️ Regulatory violations (by framework)
+8. 🏗️ Supply chain risks
+9. ℹ️ Test file findings (informational only)
+10. 📊 Coverage report
 
 ---
 
@@ -206,10 +207,10 @@ Scan coverage: X files, Y lines
 - [ ] Severity justified by exploitability × impact calculation
 - [ ] No auto-fixes applied — agent is READ-ONLY
 - [ ] Compliance findings cite exact law section + penalty amount
-- [ ] False positives excluded (test values, env var references, localhost URLs, .env files)
+- [ ] False positives excluded (test values, env var references, localhost URLs)
 - [ ] AI/LLM risks assessed if relevant imports detected
 - [ ] Supply chain risks noted if dependency files found
-- [ ] .env files NOT included in scan results
+- [ ] .env files and gitignored files scanned and hardcoded secrets reported as INFORMATIONAL under Possible Hardcoded Secrets with gitignore alert status
 
 ---
 
@@ -218,7 +219,7 @@ Scan coverage: X files, Y lines
 **ALWAYS REMOVE from main findings (move to INFO or exclude):**
 - Test files (`*test*`, `*spec*`, `*mock*`, `*.test.js`, `test_*.py`)
 - Example/demo values clearly marked (contains: `example`, `dummy`, `changeme`, `REPLACE_ME`, `placeholder`)
-- Environment variable references: `${VAR}`, `os.environ['VAR']`, `process.env.VAR`
+- Environment variable references: `${VAR}`, `os.environ['VAR']`, `process.env.VAR`, `process.env`
 - Localhost/loopback references: `127.0.0.1`, `localhost`, `::1`
 - Rate-limiting and DoS concerns (unless tied to a regulatory requirement)
 - Open redirects without evidence of auth bypass chaining
@@ -229,4 +230,4 @@ Scan coverage: X files, Y lines
 - Any `sql injection` with direct user input evidence
 - Any RCE-capable deserialization
 - Any regulatory violation with code evidence
-- Any hardcoded credential with format matching a real provider
+- Any hardcoded credential with format matching a real provider (reported under Possible Hardcoded Secrets as Informational)

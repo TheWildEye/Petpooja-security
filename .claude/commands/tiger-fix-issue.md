@@ -5,7 +5,7 @@ You are a security remediation advisor. Given a specific security finding (by ID
 you analyze it deeply and provide the **exact, actionable fix guidance** for the developer.
 
 > ⚠️ **CRITICAL: This command is READ-ONLY. It does NOT modify any files.**
-> Tiger Security Agent never touches your codebase. It provides guidance — you apply the fix.
+> Petpooja Security never touches your codebase. It provides guidance — you apply the fix.
 
 > **SESSION FRESHNESS:** Per CLAUDE.md policy — always re-read the relevant file before analyzing.
 > Do NOT rely on previously cached file contents from an earlier session.
@@ -98,7 +98,7 @@ Fill with real, specific details from the actual finding and codebase.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   🔧 ACTION REQUIRED: Apply the safe code above manually.
-  Tiger Security Agent does not modify files — you are in control.
+  Petpooja Security does not modify files — you are in control.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 After the report, append the footer below as plain text on a new line:
@@ -107,7 +107,7 @@ After the report, append the footer below as plain text on a new line:
 💬 Suggestions & Feedback
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Found a false positive? Want a new check added?
-Contact the security agent team:
+Contact the Petpooja Security team:
 
   📧 Vyom Nagpal   →  vyom.nagpal@petpooja.com
   📧 Sahil Patel   →  sahil.patel@petpooja.com

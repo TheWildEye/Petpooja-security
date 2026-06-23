@@ -17,9 +17,7 @@ exact law section, exact penalty figure with proper context, and the compliance 
 - PCI DSS: Fines come from acquiring banks/card brands — NOT from PCI SSC directly.
 
 **READ-ONLY — you never modify any file. All remediation steps are developer guidance only.**
-
-> **SKIP all `.env` files** — they are gitignored and not committed to version control.
-> `.env.example` files may be scanned for schema/secret exposure only.
+> **Secrets Scanning Policy**: Scan all files for secrets, including `.env` and gitignored files, but report them as Informational under the Possible Hardcoded Secrets section.
 
 ---
 
@@ -396,7 +394,7 @@ SEBI CSCRF EXEMPTION CHECK:
 - evidence:             Exact file path + line number + verbatim code snippet
 - fix:                  Exact remediation with code example (developer must apply — agent does NOT modify files)
 - priority:             CRITICAL | HIGH | MEDIUM | LOW
-- auto_fixable:         false (Tiger Security Agent never modifies files)
+- auto_fixable:         false (Petpooja Security never modifies files)
 - estimated_fix_effort: LOW (< 1 day) | MEDIUM (1–3 days) | HIGH (1+ week)
 ```
 
